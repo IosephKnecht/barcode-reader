@@ -48,8 +48,8 @@ class BarcodeCaptureActivity : AppCompatActivity(), BarcodeGraphicTracker.Barcod
     }
 
     private var cameraSource: CameraSource? = null
-    private var preview: CameraSourcePreview? = null
-    private var graphicOverlay: GraphicOverlay<BarcodeGraphic>? = null
+    private lateinit var preview: CameraSourcePreview
+    private lateinit var graphicOverlay: GraphicOverlay<BarcodeGraphic>
 
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private lateinit var gestureDetector: GestureDetector
@@ -75,7 +75,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), BarcodeGraphicTracker.Barcod
         gestureDetector = GestureDetector(this, CaptureGestureListener())
         scaleGestureDetector = ScaleGestureDetector(this, ScaleListener())
 
-        Snackbar.make(graphicOverlay!!, "Tap to capture. Pinch/Stretch to zoom",
+        Snackbar.make(graphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
             Snackbar.LENGTH_LONG)
             .show()
     }
@@ -87,12 +87,12 @@ class BarcodeCaptureActivity : AppCompatActivity(), BarcodeGraphicTracker.Barcod
 
     override fun onPause() {
         super.onPause()
-        preview?.stop()
+        preview.stop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        preview?.release()
+        preview.release()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -198,7 +198,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), BarcodeGraphicTracker.Barcod
 
         if (cameraSource != null) {
             try {
-                preview!!.start(cameraSource, graphicOverlay)
+                preview.start(cameraSource, graphicOverlay)
             } catch (e: IOException) {
                 Log.e(TAG, "Unable to start camera source.", e)
                 cameraSource!!.release()
@@ -209,19 +209,16 @@ class BarcodeCaptureActivity : AppCompatActivity(), BarcodeGraphicTracker.Barcod
     }
 
     private fun onTap(rawX: Float, rawY: Float): Boolean {
-        // Find tap point in preview frame coordinates.
         val location = IntArray(2)
-        graphicOverlay!!.getLocationOnScreen(location)
-        val x = (rawX - location[0]) / graphicOverlay!!.getWidthScaleFactor()
-        val y = (rawY - location[1]) / graphicOverlay!!.getHeightScaleFactor()
+        graphicOverlay.getLocationOnScreen(location)
+        val x = (rawX - location[0]) / graphicOverlay.widthScaleFactor
+        val y = (rawY - location[1]) / graphicOverlay.heightScaleFactor
 
-        // Find the barcode whose center is closest to the tapped point.
         var best: Barcode? = null
         var bestDistance = java.lang.Float.MAX_VALUE
-        for (graphic in graphicOverlay!!.getGraphics()) {
+        for (graphic in graphicOverlay.graphics) {
             val barcode = graphic.barcode
             if (barcode!!.boundingBox.contains(x.toInt(), y.toInt())) {
-                // Exact hit, no need to keep looking.
                 best = barcode
                 break
             }
