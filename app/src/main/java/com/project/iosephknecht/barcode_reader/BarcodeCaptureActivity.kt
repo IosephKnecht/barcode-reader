@@ -198,7 +198,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), BarcodeGraphicTracker.Barcod
 
         if (cameraSource != null) {
             try {
-                preview.start(cameraSource, graphicOverlay)
+                preview.start(cameraSource!!, graphicOverlay)
             } catch (e: IOException) {
                 Log.e(TAG, "Unable to start camera source.", e)
                 cameraSource!!.release()
