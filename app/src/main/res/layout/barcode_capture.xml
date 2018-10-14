@@ -8,12 +8,12 @@
     android:orientation="vertical">
 
     <com.project.iosephknecht.barcode_reader.ui.CameraSourcePreview
-        android:id="@+id/preview"
+        android:id="@+id/preview_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.project.iosephknecht.barcode_reader.ui.GraphicOverlay
-            android:id="@+id/graphicOverlay"
+            android:id="@+id/graphic_overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
