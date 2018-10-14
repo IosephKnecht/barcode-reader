@@ -107,14 +107,14 @@ class CameraSourcePreview @JvmOverloads constructor(context: Context,
             cameraSource!!.start(surfaceView.holder)
             if (overlayGrapic != null) {
                 val size = cameraSource!!.previewSize
-                val min = Math.min(size.width, size.height)
+                val min = Math.min(size!!.width, size.height)
                 val max = Math.max(size.width, size.height)
                 if (isPortraitMode()) {
                     // Swap width and height sizes when in portrait, since it will be rotated by
                     // 90 degrees
-                    overlayGrapic!!.setCameraInfo(min, max, cameraSource!!.cameraFacing)
+                    overlayGrapic!!.setCameraInfo(min, max, cameraSource!!.facing)
                 } else {
-                    overlayGrapic!!.setCameraInfo(max, min, cameraSource!!.cameraFacing)
+                    overlayGrapic!!.setCameraInfo(max, min, cameraSource!!.facing)
                 }
                 overlayGrapic!!.clear()
             }
