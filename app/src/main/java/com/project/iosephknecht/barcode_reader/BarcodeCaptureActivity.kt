@@ -23,7 +23,6 @@ import android.view.View
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.samples.vision.barcodereader.R
 import com.google.android.gms.vision.MultiProcessor
 import com.google.android.gms.vision.barcode.Barcode
@@ -42,9 +41,9 @@ class BarcodeCaptureActivity : AppCompatActivity(), BarcodeGraphicTracker.Barcod
     private val RC_HANDLE_CAMERA_PERM = 2
 
     companion object {
-        val AutoFocus = "AutoFocus"
-        val UseFlash = "UseFlash"
-        val BarcodeObject = "Barcode"
+        const val AutoFocus = "AutoFocus"
+        const val UseFlash = "UseFlash"
+        const val BarcodeObject = "Barcode"
     }
 
     private var cameraSource: CameraSource? = null
@@ -234,7 +233,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), BarcodeGraphicTracker.Barcod
         if (best != null) {
             val data = Intent()
             data.putExtra(BarcodeObject, best)
-            setResult(CommonStatusCodes.SUCCESS, data)
+            setResult(RequestCode.SUCCESS, data)
             finish()
             return true
         }
